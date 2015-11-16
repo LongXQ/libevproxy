@@ -3,9 +3,7 @@
 //每一个具体的事件对象的readProc和writeProc是每一个事件的定义的具体的处理函数，当然也可以不实现这两个函数，那么久使用事件代理实现的通用的处理函数
 #ifndef EVENT_HEADER
 #define EVENT_HEADER
-#define EV_READABLE 0x01
-#define EV_WRITEABLE 0x02
-#define EV_NEEDTRIGGER 0X10;
+
 
 
 //因为每一个事件的operation都不相同，所以，为了每一种事件都定义一系列操作
@@ -16,8 +14,10 @@ typedef struct event_proxy_operations{
 }event_proxy_operations;
 
 typedef struct event_proxy{
-	int setsize;
-	event_proxy_base *ev_proxy;
+	event_proxy_base file_proxy;
+	event_proxy_base timeout_proxy;
+	event_proxy_base signal_proxy;
+	event_proxy_user user_proxy;
 	event_poll *ev_poll;
 	event_base **ev_triger; //需要触发的事件，因为并不是每一个事件需要触发，所以为了减少遍历的时间，增加了这么一个成员
 	event_base **events; //注册到epoll中的不同类型的所有事件

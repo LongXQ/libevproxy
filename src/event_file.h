@@ -2,35 +2,36 @@
 #ifndef EVENT_FILE_HEADER
 #define EVENT_FILE_HEADER
 
-#define void fileReadProc(int fd,void *clientData)
-#define void fileWriteProc(int fd,void *clientData)
-#define void fileTriggerProc(int fd)
-#define int removeFileEvent(event_base *)
-#define void triggerFileEvent(event_base *);
+
+typedef void fileReadProc(int fd,void *clientData);
+typedef void fileWriteProc(int fd,void *clientData);
+typedef void fileTriggerProc(int fd);
+typedef int removeFileEvent(event_base *);
+typedef void triggerFileEvent(event_base *);
 
 typedef struct event_file_proxy_operations{
-	removeFileEvent removeEvent;
-	triggerFileEvent triggerEvent;
+	removeFileEvent *removeEvent;
+	triggerFileEvent *triggerEvent;
 }event_file_proxy_operations;
 
 typedef struct event_file_operations{
-	fileReadProc read;
-	fileWriteProc write;
-	fileTriggerProc trigger;
+	fileReadProc *read;
+	fileWriteProc *write;
+	fileTriggerProc *trigger;
 }event_file_operations;
 
 typedef struct event_file{
 	int type;
-	int fd; //这个fd是readproc和writeProc要操作的文件描述符
+	int id;
 	/* 也许可以和type字段合并成一个字段 值可以为标记这个属性是否是一个需要触发的事件类型。
 	因为有些事件是不需要自己调用触发函数来检查是否需要触发对象发生的，比如文件可读可写，
 	文件的可读可写事件是由内核触发的，不需要自己来实现触发函数。
 	而对于时间超时时间，则要用户自己定义触发函数来检查时间是否超时了，如果超时了则触发这个事件，
 	在比如用户自定义的事件，往往需要定义触发函数来检查自定义的事件是否需要触发了，因为内核不清楚这些事件该什么时候出发，
 	而一般的和文件I/O相关的事件，由于文件系统是由内核自己实现的，所以它知道该什么时候出发文件事件的发送，然后epoll就可以检查到事件是否发生了 */
-	int id;
-	int flag; //EV_TRIGGER,EV_ACTIVE,EV_STOP,EV_
+	int flag; //EV_TRIGGER,EV_ACTIVE,EV_STOP,EV_NONE
 	int mask;
+	int fd; //这个fd是readproc和writeProc要操作的文件描述符
 	event_file_operations *ops;
 	void *clientData
 }event_file;
