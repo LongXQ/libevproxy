@@ -10,7 +10,7 @@
 int createEventPoll(event_proxy *proxy,int setsize){
 	event_poll *ev_poll=(event_poll*)malloc(sizeof(event_poll));
 	if(!ev_poll)return EVENT_ERR;
-	ev_poll->events=(struct epoll_event*)malloc(sizeof(struct epoll_event)*setsize);
+	ev_poll->events=(struct epoll_event*)malloc(sizeof(struct epoll_event)*(setsize+1));
 	if(!ev_poll->events){
 		free(ev_poll);
 		return EVENT_ERR;
@@ -29,11 +29,11 @@ int resizeEventPoll(event_proxy *proxy,int setsize){
 	if(setsize<=proxy->setsize)return EVENT_ERR;
 	event_poll *ev_poll=proxy->ev_poll;
 	struct epoll_event *events;
-	events=(struct epoll_event*)malloc(setsize*sizeof(struct epoll_event));
+	events=(struct epoll_event*)malloc((setsize+1)*sizeof(struct epoll_event));
 	//events=(struct epoll_event*)realloc(ev_poll->events,sizeof(struct epoll_event)*setsize);
 	if(events==NULL)
 		return EVENT_ERR;
-	memcpy((void*)events,(void*)ev_poll->events,sizeof(struct epoll_event)*proxy->setsize);
+	memcpy((void*)events,(void*)ev_poll->events,sizeof(struct epoll_event)*(proxy->setsize+1));
 	free(ev_poll->events);
 	ev_poll->events=events;
 	return EVENT_OK;

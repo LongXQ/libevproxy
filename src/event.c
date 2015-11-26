@@ -249,10 +249,10 @@ event_proxy *createEventProxy(int setsize){
 		goto error;
 	if(createEventPoll(proxy,setsize)==EVENT_ERR)
 		goto error;
-	proxy->events=(event_base**)malloc(sizeof(event_base*)*setsize);
+	proxy->events=(event_base**)malloc(sizeof(event_base*)*(setsize+1));
 	if(proxy->events==NULL)
 		goto error;
-	proxy->ev_fires=(event_fired*)malloc(sizeof(event_fired)*setsize);
+	proxy->ev_fires=(event_fired*)malloc(sizeof(event_fired)*(setsize+1));
 	if(proxy->ev_fires==NULL)
 		goto error;
 	return proxy;
@@ -280,19 +280,19 @@ int resizeProxySetsize(event_proxy *proxy,int setsize){
 	if(resizeEventPoll(proxy,setsize)==EVENT_ERR)
 		return EVENT_ERR;
 	event_base **events;
-	events=(event_base**)malloc(sizeof(event_base*)*setsize);
+	events=(event_base**)malloc(sizeof(event_base*)*(setsize+1));
 	//events=(event_base**)realloc(proxy->events,sizeof(event_base*)*setsize);
 	if(events==NULL)
 		return EVENT_ERR;
-	memcpy((void*)events,(void*)proxy->events,proxy->setsize*sizeof(event_base*));
+	memcpy((void*)events,(void*)proxy->events,(proxy->setsize+1)*sizeof(event_base*));
 	free(proxy->events);
 	proxy->events=events;
 	event_fired *fired;
-	fired=(event_fired*)malloc(sizeof(event_fired)*setsize);
+	fired=(event_fired*)malloc(sizeof(event_fired)*(setsize+1));
 	//fired=(event_fired*)realloc(proxy->ev_fires,sizeof(event_fired)*setsize);
 	if(fired==NULL)
 		return EVENT_ERR;
-	memcpy((void*)fired,(void*)proxy->ev_fires,proxy->setsize*sizeof(event_fired));
+	memcpy((void*)fired,(void*)proxy->ev_fires,(proxy->setsize+1)*sizeof(event_fired));
 	free(proxy->ev_fires);
 	proxy->ev_fires=fired;
 	proxy->setsize=setsize;
