@@ -43,8 +43,6 @@ int main(){
 				return 0;
 		}
 		event_user *user=(event_user*)event;
-		printf("fd[0] = %d\n",user->fd[0]);
-		printf("fd[1]= %d\n",user->fd[1]);
 		int rv=addUserEvent(proxy,event,userProc,userCleanProc,(void*)&u);
 		if(rv==EVENT_ERR)
 				printf("rv == EVENT_ERR\n");

@@ -1,12 +1,11 @@
 #ifndef EVENT_POLL_HEADER
 #define EVENT_POLL_HEADER
-#include <sys/time.h>
-#include <sys/epoll.h>
+#include <sys/select.h>
 
 //下面这个event_poll是针对epoll的
 typedef struct event_poll {
-	int epfd;
-	struct epoll_event *events;
+	fd_set rfds,wfds;
+	fd_set _rfds,_wfds;
 }event_poll;
 
 struct event_proxy;

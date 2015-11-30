@@ -16,8 +16,6 @@ int main(){
 		if(event==NULL)
 				printf("event == NULL\n");
 		event_timeout *timeout=(event_timeout*)event;
-		printf("event->fd[0] = %d\n",timeout->fd[0]);
-		printf("event->fd[1] = %d\n",timeout->fd[1]);
 		int rv=addTimeoutEvent(proxy,event,proc,NULL);
 		addTimeoutEvent(proxy,event1,proc,NULL);
 		if(rv==EVENT_ERR){

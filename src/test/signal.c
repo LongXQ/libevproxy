@@ -24,8 +24,6 @@ int main(){
 				return 0;
 		}
 		event_signal *sig=(event_signal*)event;
-		printf("fd[0] = %d\n",sig->fd[0]);
-		printf("fd[1]= %d\n",sig->fd[1]);
 		int rv=addSignalEvent(proxy,event,signalProc,NULL);
 		if(rv==EVENT_ERR)
 				printf("rv == error\n");
