@@ -2,8 +2,8 @@
 libevproxy是一个用C语言编写的，基于reactor模式的事件驱动库，目前只支持Linux平台。支持I/O多路复用技术，不过目前只支持epoll和select。
 支持各种不同类型的事件，目前支持的有I/O事件，定时器事件，信号事件和用户自定义事件。
 ### livevproxy使用
-##### 创建一个事件代替
-首先我们创建一个事件代替，这个代替就是负责管理各种事件的角色。
+##### 创建一个事件代理
+首先我们创建一个事件代理，这个代替就是负责管理各种事件的角色。
 ```c
 #include "event.h"
 event_proxy *proxy=createEventProxy(setsize);
